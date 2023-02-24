@@ -67,7 +67,7 @@ public class Main {
                         int amount = Integer.parseInt(parts[1]);
 
                         if (amnt[kind] + amount < 0) {
-                            System.out.println("Количество товара не может быть отрицательным!");
+                            System.out.println("Количество товара не может быть отрицательным :(");
                             continue;
                         }
                         if (amount == 0 || amnt[kind] + amount == 0) {
