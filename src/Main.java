@@ -13,6 +13,9 @@ public class Main {
         //Массив информации о каждом товаре
         String[] fullProductInf = {"1. Молоко 50 руб/шт", "2. Хлеб 14 руб/шт", "3. Гречневая крупа 80 руб/шт"};
 
+        //Массив отвечает за наличие или отсутствие скидки у каждого вида товара
+        boolean[] sale = {false, false, true};
+
         //Массив проверки наличия товара в корзине
         boolean[] availability = new boolean[3];
         
@@ -51,12 +54,15 @@ public class Main {
                 String[] parts = choice.split(" ");
                 if (parts.length != 2) {
                     System.out.println("Должно быть введено два значения!");
+                    continue;
                 } else {
                     try {
                         if (Integer.parseInt(parts[0]) < 1 || Integer.parseInt(parts[0]) > 3) {
                             System.out.println("Введен некорректный номер товара");
+                            continue;
                         } else if (Integer.parseInt(parts[1]) < 0) {
                             System.out.println("Введено некорректное количество товара");
+                            continue;
                         } else {
                             //Значение типа товара
                             int kind = Integer.parseInt(parts[0]) - 1;
@@ -65,6 +71,15 @@ public class Main {
 
                             //Расчет общей стоимости одного вида товара в корзине
                             goods[kind] += amount * count[kind];
+
+                            //Скидочный расчет общей стоимости одного вида товара
+                            if (sale[kind]) {
+                                int generalAmount = goods[kind] / count[kind];
+                                if (generalAmount >= 3) {
+                                    int saleCount = generalAmount / 3;
+                                    goods[kind] = (generalAmount - saleCount) * count[kind];
+                                }
+                            }
 
                             //Подтверждение наличия товара
                             availability[kind] = true;
