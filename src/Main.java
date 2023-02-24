@@ -15,6 +15,9 @@ public class Main {
 
         //Массив проверки наличия товара в корзине
         boolean[] availability = new boolean[3];
+
+        //Количество каждого вида товара
+        int[] amnt = new int[3];
         
         while (true) {
             System.out.println("Список возможных товаров для покупки:");
@@ -55,20 +58,22 @@ public class Main {
                     try {
                         if (Integer.parseInt(parts[0]) < 1 || Integer.parseInt(parts[0]) > 3) {
                             System.out.println("Введен некорректный номер товара");
-                        } else if (Integer.parseInt(parts[1]) < 0) {
-                            System.out.println("Введено некорректное количество товара");
-                        } else {
-                            //Значение типа товара
-                            int kind = Integer.parseInt(parts[0]) - 1;
-                            //Значение количества товара
-                            int amount = Integer.parseInt(parts[1]);
-
-                            //Расчет общей стоимости одного вида товара в корзине
-                            goods[kind] += amount * count[kind];
-
-                            //Подтверждение наличия товара
-                            availability[kind] = true;
                         }
+                        //Значение типа товара
+                        int kind = Integer.parseInt(parts[0]) - 1;
+                        //Значение количества товара
+                        int amount = Integer.parseInt(parts[1]);
+
+                        if (amnt[kind] + amount < 0) {
+                            System.out.println("Количество товара не может быть отрицательным!");
+                        }
+
+                        //Расчет общей стоимости одного вида товара в корзине
+                        goods[kind] += amount * count[kind];
+
+                        //Подтверждение наличия товара
+                        availability[kind] = true;
+
                     } catch (NumberFormatException e) {
                         System.out.println("Введено некорректное значение");
                     }
