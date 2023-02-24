@@ -11,13 +11,16 @@ public class Main {
         int[] count = {50, 14, 80};
 
         //Массив информации о каждом товаре
-        String[] fullProductInf = {"1. Молоко 50 руб/шт", "2. Хлеб 14 руб/шт", "3. Гречневая крупа 80 руб/шт"};
+        String[] fullProductInf = {"1. Молоко 50 руб/шт ", "2. Хлеб 14 руб/шт ", "3. Гречневая крупа 80 руб/шт "};
 
         //Массив отвечает за наличие или отсутствие скидки у каждого вида товара
         boolean[] sale = {false, false, true};
 
         //Массив проверки наличия товара в корзине
         boolean[] availability = new boolean[3];
+
+        //Количество каждого вида товара
+        int[] amnt = new int[3];
         
         while (true) {
             System.out.println("Список возможных товаров для покупки:");
@@ -60,14 +63,21 @@ public class Main {
                         if (Integer.parseInt(parts[0]) < 1 || Integer.parseInt(parts[0]) > 3) {
                             System.out.println("Введен некорректный номер товара");
                             continue;
-                        } else if (Integer.parseInt(parts[1]) < 0) {
-                            System.out.println("Введено некорректное количество товара");
+                        }
+                        //Значение типа товара
+                        int kind = Integer.parseInt(parts[0]) - 1;
+                        //Значение количества товара
+                        int amount = Integer.parseInt(parts[1]);
+
+                        if (amnt[kind] + amount < 0) {
+                            System.out.println("Количество товара не может быть отрицательным :(");
                             continue;
-                        } else {
-                            //Значение типа товара
-                            int kind = Integer.parseInt(parts[0]) - 1;
-                            //Значение количества товара
-                            int amount = Integer.parseInt(parts[1]);
+                        }
+                        if (amount == 0 || amnt[kind] + amount == 0) {
+                            amnt[kind] = 0;
+                            goods[kind] = 0;
+                            availability[kind] = false;
+                            continue;
 
                             //Расчет общей стоимости одного вида товара в корзине
                             goods[kind] += amount * count[kind];
@@ -83,7 +93,9 @@ public class Main {
 
                             //Подтверждение наличия товара
                             availability[kind] = true;
+                            amnt[kind] = amount;
                         }
+
                     } catch (NumberFormatException e) {
                         System.out.println("Введено некорректное значение");
                     }
