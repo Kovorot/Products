@@ -11,7 +11,7 @@ public class Main {
         int[] count = {50, 14, 80};
 
         //Массив информации о каждом товаре
-        String[] fullProductInf = {"1. Молоко 50 руб/шт", "2. Хлеб 14 руб/шт", "3. Гречневая крупа 80 руб/шт"};
+        String[] fullProductInf = {"1. Молоко 50 руб/шт ", "2. Хлеб 14 руб/шт ", "3. Гречневая крупа 80 руб/шт "};
 
         //Массив проверки наличия товара в корзине
         boolean[] availability = new boolean[3];
@@ -54,10 +54,12 @@ public class Main {
                 String[] parts = choice.split(" ");
                 if (parts.length != 2) {
                     System.out.println("Должно быть введено два значения!");
+                    continue;
                 } else {
                     try {
                         if (Integer.parseInt(parts[0]) < 1 || Integer.parseInt(parts[0]) > 3) {
                             System.out.println("Введен некорректный номер товара");
+                            continue;
                         }
                         //Значение типа товара
                         int kind = Integer.parseInt(parts[0]) - 1;
@@ -66,6 +68,13 @@ public class Main {
 
                         if (amnt[kind] + amount < 0) {
                             System.out.println("Количество товара не может быть отрицательным!");
+                            continue;
+                        }
+                        if (amount == 0 || amnt[kind] + amount == 0) {
+                            amnt[kind] = 0;
+                            goods[kind] = 0;
+                            availability[kind] = false;
+                            continue;
                         }
 
                         //Расчет общей стоимости одного вида товара в корзине
@@ -73,6 +82,8 @@ public class Main {
 
                         //Подтверждение наличия товара
                         availability[kind] = true;
+
+                        amnt[kind] = amount;
 
                     } catch (NumberFormatException e) {
                         System.out.println("Введено некорректное значение");
