@@ -13,6 +13,9 @@ public class Main {
         //Массив информации о каждом товаре
         String[] fullProductInf = {"1. Молоко 50 руб/шт ", "2. Хлеб 14 руб/шт ", "3. Гречневая крупа 80 руб/шт "};
 
+        //Массив отвечает за наличие или отсутствие скидки у каждого вида товара
+        boolean[] sale = {false, false, true};
+
         //Массив проверки наличия товара в корзине
         boolean[] availability = new boolean[3];
 
@@ -75,15 +78,23 @@ public class Main {
                             goods[kind] = 0;
                             availability[kind] = false;
                             continue;
+
+                            //Расчет общей стоимости одного вида товара в корзине
+                            goods[kind] += amount * count[kind];
+
+                            //Скидочный расчет общей стоимости одного вида товара
+                            if (sale[kind]) {
+                                int generalAmount = goods[kind] / count[kind];
+                                if (generalAmount >= 3) {
+                                    int saleCount = generalAmount / 3;
+                                    goods[kind] = (generalAmount - saleCount) * count[kind];
+                                }
+                            }
+
+                            //Подтверждение наличия товара
+                            availability[kind] = true;
+                            amnt[kind] = amount;
                         }
-
-                        //Расчет общей стоимости одного вида товара в корзине
-                        goods[kind] += amount * count[kind];
-
-                        //Подтверждение наличия товара
-                        availability[kind] = true;
-
-                        amnt[kind] = amount;
 
                     } catch (NumberFormatException e) {
                         System.out.println("Введено некорректное значение");
